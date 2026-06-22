@@ -6,6 +6,8 @@ import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
+import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,11 @@ public class BeanConfiguration {
     @Bean
     public CreateUserUseCase createUserUseCase(UserGateway userGateway) {
         return new CreateUserUseCaseImpl(userGateway);
+    }
+
+    @Bean
+    public UpdateUseCase updateUseCase(UserGateway userGateway) {
+        return new UpdateUseCaseImpl(userGateway);
     }
 
 }

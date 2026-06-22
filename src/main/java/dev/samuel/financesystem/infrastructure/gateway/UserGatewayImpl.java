@@ -6,6 +6,7 @@ import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,18 @@ public class UserGatewayImpl implements UserGateway {
         persistenceUser.setPassword(passwordEncoder.encode(user.password()));
         dev.samuel.financesystem.infrastructure.persistence.User salvo = userRepository.save(persistenceUser);
         return userMapper.toDomain(salvo);
+    }
+
+    @Override
+    public User updateUser(Long id, User user) {
+         userRepository.findById(id)
+                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+
+        dev.samuel.financesystem.infrastructure.persistence.User persistenceUser = userMapper.toPersistenceEntity(user);
+        persistenceUser.setId(id);
+
+        persistenceUser.setPassword(passwordEncoder.encode(user.password()));
+        dev.samuel.financesystem.infrastructure.persistence.User saved = userRepository.save(persistenceUser);
+        return userMapper.toDomain(saved);
     }
 }
