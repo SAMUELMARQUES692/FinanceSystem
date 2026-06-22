@@ -5,6 +5,7 @@ import dev.samuel.financesystem.core.gateway.UserGateway;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserGatewayImpl implements UserGateway {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public User createUser(User user) {
         dev.samuel.financesystem.infrastructure.persistence.User persistenceUser = userMapper.toPersistenceEntity(user);
 
@@ -41,6 +43,7 @@ public class UserGatewayImpl implements UserGateway {
     }
 
     @Override
+    @Transactional
     public User updateUser(Long id, User user) {
          userRepository.findById(id)
                  .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
@@ -51,5 +54,12 @@ public class UserGatewayImpl implements UserGateway {
         persistenceUser.setPassword(passwordEncoder.encode(user.password()));
         dev.samuel.financesystem.infrastructure.persistence.User saved = userRepository.save(persistenceUser);
         return userMapper.toDomain(saved);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+        userRepository.deleteById(id);
     }
 }

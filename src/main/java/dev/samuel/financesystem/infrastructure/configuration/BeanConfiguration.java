@@ -4,6 +4,8 @@ import dev.samuel.financesystem.core.gateway.LoginGateway;
 import dev.samuel.financesystem.core.gateway.UserGateway;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
+import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
@@ -29,4 +31,8 @@ public class BeanConfiguration {
         return new UpdateUseCaseImpl(userGateway);
     }
 
+    @Bean
+    public DeleteUserUseCase deleteUserUseCase(UserGateway userGateway) {
+        return new DeleteUserUseCaseImpl(userGateway);
+    }
 }
