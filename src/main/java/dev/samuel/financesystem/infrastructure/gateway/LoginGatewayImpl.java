@@ -12,14 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-@Component
 @Service
 @RequiredArgsConstructor
 public class LoginGatewayImpl implements LoginGateway {
@@ -44,7 +42,7 @@ public class LoginGatewayImpl implements LoginGateway {
 
         JwtClaimsSet jwt = JwtClaimsSet.builder()
                 .issuer("financesystem-api")
-                .subject(savedUser.getName())
+                .subject(savedUser.getId().toString())
                 .expiresAt(Instant.now().plusSeconds(expiresIn))
                 .issuedAt(Instant.now())
                 .claim("email", savedUser.getEmail())

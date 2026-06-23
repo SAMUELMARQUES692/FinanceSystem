@@ -1,7 +1,10 @@
 package dev.samuel.financesystem.infrastructure.configuration;
 
+import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.gateway.LoginGateway;
 import dev.samuel.financesystem.core.gateway.UserGateway;
+import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
@@ -16,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfiguration {
 
+    // User
     @Bean
     public LoginUseCase loginUseCase(LoginGateway loginGateway) {
         return new LoginUseCaseImpl(loginGateway);
@@ -34,5 +38,11 @@ public class BeanConfiguration {
     @Bean
     public DeleteUserUseCase deleteUserUseCase(UserGateway userGateway) {
         return new DeleteUserUseCaseImpl(userGateway);
+    }
+
+    // Account
+    @Bean
+    public CreateAccountUseCase createAccountUseCase(AccountGateway accountGateway) {
+        return new CreateAccountUseCaseImpl(accountGateway);
     }
 }
