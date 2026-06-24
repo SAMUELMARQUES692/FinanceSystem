@@ -21,4 +21,10 @@ public class AccountGatewayImpl implements AccountGateway {
        dev.samuel.financesystem.infrastructure.persistence.Account saved = accountRepository.save(persistenceAccount);
         return accountMapper.toDomain(saved);
     }
+
+    @Override
+    public boolean existsByUserId(Long userId) {
+        return accountRepository.existsByUserId(userId);
+    }
+
 }

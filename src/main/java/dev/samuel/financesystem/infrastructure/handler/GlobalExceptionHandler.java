@@ -1,5 +1,6 @@
 package dev.samuel.financesystem.infrastructure.handler;
 
+import dev.samuel.financesystem.infrastructure.exception.AccountAlreadyExistsException;
 import dev.samuel.financesystem.infrastructure.exception.UserOrPasswordIncorectException;
 import dev.samuel.financesystem.infrastructure.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +16,23 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserOrPasswordIncorectException.class)
-    public ResponseEntity<ErrorResponse> handleClubNotFound(UserOrPasswordIncorectException exception) {
+    public ResponseEntity<ErrorResponse> userAndPasswordIncorect(UserOrPasswordIncorectException exception) {
         ErrorResponse error = new ErrorResponse(
                 "BAD_CREDENTIAL",
                 exception.getMessage(),
                 LocalDateTime.now()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AccountAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> duplicatedUser(AccountAlreadyExistsException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "DUPLICATED_USER",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     // Fallback para erros inesperados
