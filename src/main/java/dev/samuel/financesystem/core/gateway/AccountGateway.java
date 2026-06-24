@@ -8,4 +8,6 @@ public interface AccountGateway {
 
     boolean existsByUserId(Long userId);
 
+    Account findByUserId(Long userId);
+
 }

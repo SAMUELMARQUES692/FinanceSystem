@@ -2,6 +2,7 @@ package dev.samuel.financesystem.infrastructure.configuration;
 
 import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.gateway.LoginGateway;
+import dev.samuel.financesystem.core.gateway.TransactionGateway;
 import dev.samuel.financesystem.core.gateway.UserGateway;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCaseImpl;
@@ -11,6 +12,8 @@ import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCase;
+import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -44,5 +47,11 @@ public class BeanConfiguration {
     @Bean
     public CreateAccountUseCase createAccountUseCase(AccountGateway accountGateway) {
         return new CreateAccountUseCaseImpl(accountGateway);
+    }
+
+    // Trasactions
+    @Bean
+    public TransferUseCase transferUseCase(TransactionGateway transactionGateway) {
+        return new TransferUseCaseImpl(transactionGateway);
     }
 }

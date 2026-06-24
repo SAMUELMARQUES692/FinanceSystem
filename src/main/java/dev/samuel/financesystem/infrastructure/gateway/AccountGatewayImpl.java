@@ -27,4 +27,11 @@ public class AccountGatewayImpl implements AccountGateway {
         return accountRepository.existsByUserId(userId);
     }
 
+    @Override
+    public Account findByUserId(Long userId) {
+        return accountRepository.findByUserId(userId)
+                .map(accountMapper::toDomain)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
+
 }
