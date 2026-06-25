@@ -1,7 +1,6 @@
 package dev.samuel.financesystem.infrastructure.handler;
 
-import dev.samuel.financesystem.infrastructure.exception.AccountAlreadyExistsException;
-import dev.samuel.financesystem.infrastructure.exception.UserOrPasswordIncorectException;
+import dev.samuel.financesystem.infrastructure.exception.*;
 import dev.samuel.financesystem.infrastructure.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +28,46 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> duplicatedUser(AccountAlreadyExistsException exception) {
         ErrorResponse error = new ErrorResponse(
                 "DUPLICATED_USER",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(DestinationAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> destinationNotFound(DestinationAccountNotFoundException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "DESTINATION_NOT_FOUND",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(OriginAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> originNotFound(OriginAccountNotFoundException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "ORIGIN_NOT_FOUND",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<ErrorResponse> insufficientBalance(InsufficientBalanceException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "INSUFFICIENT_BALANCE",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(SameAccountException.class)
+    public ResponseEntity<ErrorResponse> sameAccount(SameAccountException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "SAME_ACCOUNT",
                 exception.getMessage(),
                 LocalDateTime.now()
         );

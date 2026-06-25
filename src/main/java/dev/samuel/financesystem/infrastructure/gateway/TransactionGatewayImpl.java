@@ -3,6 +3,10 @@ package dev.samuel.financesystem.infrastructure.gateway;
 import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.enums.Status;
 import dev.samuel.financesystem.core.gateway.TransactionGateway;
+import dev.samuel.financesystem.infrastructure.exception.DestinationAccountNotFoundException;
+import dev.samuel.financesystem.infrastructure.exception.InsufficientBalanceException;
+import dev.samuel.financesystem.infrastructure.exception.OriginAccountNotFoundException;
+import dev.samuel.financesystem.infrastructure.exception.SameAccountException;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.persistence.Account;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
@@ -26,14 +30,19 @@ public class TransactionGatewayImpl implements TransactionGateway {
 
         // Busca as contas
         Account origin = accountRepository.findById(transaction.originId())
-                .orElseThrow(() -> new RuntimeException("Origin account not found"));
+                .orElseThrow(() -> new OriginAccountNotFoundException("Origin account not found"));
 
         Account destination = accountRepository.findById(transaction.destinationId())
-                .orElseThrow(() -> new RuntimeException("Destination account not found"));
+                .orElseThrow(() -> new DestinationAccountNotFoundException("Destination account not found"));
 
         // Valida saldo
         if (origin.getBalance().compareTo(transaction.amount()) < 0) {
-            throw new RuntimeException("Insufficient balance");
+            throw new InsufficientBalanceException("Insufficient balance");
+        }
+
+        // Valida se não é a mesma conta <- veio antes do saldo
+        if (origin.getId().equals(destination.getId())) {
+            throw new SameAccountException("Origin account can't be equals destination account");
         }
 
         // Debita e credita
