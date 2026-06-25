@@ -35,14 +35,14 @@ public class TransactionGatewayImpl implements TransactionGateway {
         Account destination = accountRepository.findById(transaction.destinationId())
                 .orElseThrow(() -> new DestinationAccountNotFoundException("Destination account not found"));
 
+        // Valida se não é a mesma conta <- veio antes do saldo
+        if (origin.getUserId().equals(destination.getUserId())) {
+            throw new SameAccountException("Origin account can't be equals destination account");
+        }
+
         // Valida saldo
         if (origin.getBalance().compareTo(transaction.amount()) < 0) {
             throw new InsufficientBalanceException("Insufficient balance");
-        }
-
-        // Valida se não é a mesma conta <- veio antes do saldo
-        if (origin.getId().equals(destination.getId())) {
-            throw new SameAccountException("Origin account can't be equals destination account");
         }
 
         // Debita e credita

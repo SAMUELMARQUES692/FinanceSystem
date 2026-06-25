@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
     }
 
     @ExceptionHandler(SameAccountException.class)
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     // Fallback para erros inesperados
