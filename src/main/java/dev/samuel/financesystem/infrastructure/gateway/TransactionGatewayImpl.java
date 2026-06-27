@@ -9,10 +9,14 @@ import dev.samuel.financesystem.infrastructure.exception.OriginAccountNotFoundEx
 import dev.samuel.financesystem.infrastructure.exception.SameAccountException;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.persistence.Account;
+import dev.samuel.financesystem.infrastructure.persistence.User;
+import dev.samuel.financesystem.infrastructure.producer.UserProducer;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
 import dev.samuel.financesystem.infrastructure.repository.TransactionRepository;
+import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +26,8 @@ public class TransactionGatewayImpl implements TransactionGateway {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final UserProducer userProducer;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -61,6 +67,10 @@ public class TransactionGatewayImpl implements TransactionGateway {
         dev.samuel.financesystem.infrastructure.persistence.Transaction saved =
                 transactionRepository.save(persistenceTransaction);
 
+        User destinationUser = userRepository.findById(destination.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        userProducer.publishEvent(saved, destinationUser.getEmail());
         return transactionMapper.toDomain(saved);
     }
 }
