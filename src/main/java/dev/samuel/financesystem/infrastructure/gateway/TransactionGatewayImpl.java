@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionGatewayImpl implements TransactionGateway {
@@ -72,6 +74,13 @@ public class TransactionGatewayImpl implements TransactionGateway {
 
         userProducer.publishEvent(saved, destinationUser.getEmail());
         return transactionMapper.toDomain(saved);
+    }
+
+    @Override
+    public List<Transaction> findByAccountId(Long accountId) {
+        return transactionRepository.findByOriginIdOrDestinationId(accountId, accountId).stream()
+                .map(transactionMapper::toDomain)
+                .toList();
     }
 }
 

@@ -5,6 +5,9 @@ import dev.samuel.financesystem.infrastructure.request.TransactionRequest;
 import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
