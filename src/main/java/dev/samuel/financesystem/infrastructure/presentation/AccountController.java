@@ -2,6 +2,7 @@ package dev.samuel.financesystem.infrastructure.presentation;
 
 import dev.samuel.financesystem.core.entities.Account;
 import dev.samuel.financesystem.core.entities.Transaction;
+import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
@@ -25,6 +26,7 @@ public class AccountController {
 
     private final CreateAccountUseCase createAccountUseCase;
     private final AccountMapper accountMapper;
+    private final AccountGateway accountGateway;
 
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
@@ -45,6 +47,13 @@ public class AccountController {
         Account createdAccount = createAccountUseCase.execute(newAccount);
         AccountResponse response = accountMapper.toAccountResponse(createdAccount);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<AccountResponse> getBalance(JwtAuthenticationToken token) {
+        Long userId = Long.parseLong(token.getName());
+        Account account = accountGateway.getBalance(userId);
+        return ResponseEntity.ok(accountMapper.toAccountResponse(account));
     }
 
 }

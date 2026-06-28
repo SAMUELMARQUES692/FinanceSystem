@@ -16,6 +16,7 @@ import dev.samuel.financesystem.infrastructure.repository.TransactionRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class TransactionGatewayImpl implements TransactionGateway {
 
 
     @Override
+    @CacheEvict(value = "balance", allEntries = true)
     @Transactional
     public Transaction transfer(Transaction transaction) {
 

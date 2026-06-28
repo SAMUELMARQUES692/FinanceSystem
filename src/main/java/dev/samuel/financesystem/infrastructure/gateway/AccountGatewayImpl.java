@@ -8,6 +8,7 @@ import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
 import dev.samuel.financesystem.infrastructure.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,4 +39,11 @@ public class AccountGatewayImpl implements AccountGateway {
                 .orElseThrow(() -> new RuntimeException("Account not found"));
     }
 
+    @Cacheable(value = "balance", key = "#userId")
+    @Override
+    public Account getBalance(Long userId) {
+        return accountRepository.findByUserId(userId)
+                .map(accountMapper::toDomain)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
 }

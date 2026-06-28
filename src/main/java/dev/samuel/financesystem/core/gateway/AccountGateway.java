@@ -10,4 +10,6 @@ public interface AccountGateway {
 
     Account findByUserId(Long userId);
 
+    Account getBalance(Long userId);
+
 }
