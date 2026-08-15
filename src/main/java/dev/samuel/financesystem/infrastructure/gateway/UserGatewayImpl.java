@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +62,12 @@ public class UserGatewayImpl implements UserGateway {
         userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        dev.samuel.financesystem.infrastructure.persistence.User usuario = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        return userMapper.toDomain(usuario);
     }
 }

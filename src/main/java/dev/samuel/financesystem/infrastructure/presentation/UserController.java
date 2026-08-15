@@ -3,6 +3,7 @@ package dev.samuel.financesystem.infrastructure.presentation;
 import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
+import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.request.UserRequest;
@@ -20,6 +21,7 @@ public class UserController {
     private final CreateUserUseCase createUserUseCase;
     private final UpdateUseCase updateUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final FindByEmailUseCase findByEmailUseCase;
     private final UserMapper userMapper;
 
     @PostMapping
@@ -42,6 +44,13 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         deleteUserUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{email}/email")
+    public ResponseEntity<UserResponse> findByEmail(@PathVariable String email) {
+        User findUser = findByEmailUseCase.execute(email);
+        UserResponse response = userMapper.toUserResponse(findUser);
+        return ResponseEntity.ok(response);
     }
 
 }

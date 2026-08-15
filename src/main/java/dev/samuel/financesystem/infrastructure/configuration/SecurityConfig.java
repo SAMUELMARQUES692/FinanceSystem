@@ -32,12 +32,6 @@ import java.security.interfaces.RSAPublicKey;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    @Value("${jwt.public.key}")
-    private RSAPublicKey rsaPublicKey;
-
-    @Value("${jwt.private.key}")
-    private RSAPrivateKey rsaPrivateKey;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         return http
@@ -47,6 +41,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
+                        .requestMatchers(HttpMethod.POST, "/**").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/**").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -56,14 +54,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(this.rsaPublicKey).privateKey(rsaPrivateKey).build();
+    public JwtEncoder jwtEncoder(RSAPublicKey rsaPublicKey, RSAPrivateKey rsaPrivateKey) {
+        JWK jwk = new RSAKey.Builder(rsaPublicKey).privateKey(rsaPrivateKey).build();
         ImmutableJWKSet<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
+    public JwtDecoder jwtDecoder(RSAPublicKey rsaPublicKey) {
         return NimbusJwtDecoder.withPublicKey(rsaPublicKey).build();
     }
 

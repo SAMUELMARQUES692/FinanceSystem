@@ -9,4 +9,6 @@ public interface UserGateway {
     User updateUser(Long id, User user);
 
     void deleteUser(Long id);
+
+    User findByEmail(String email);
 }
