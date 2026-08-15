@@ -1,15 +1,14 @@
 package dev.samuel.financesystem.infrastructure.configuration;
 
-import dev.samuel.financesystem.core.gateway.AccountGateway;
-import dev.samuel.financesystem.core.gateway.LoginGateway;
-import dev.samuel.financesystem.core.gateway.TransactionGateway;
-import dev.samuel.financesystem.core.gateway.UserGateway;
+import dev.samuel.financesystem.core.gateway.*;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCase;
+import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
 import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
@@ -67,5 +66,11 @@ public class BeanConfiguration {
     @Bean
     public ReportUseCase reportUseCase(TransactionGateway transactionGateway) {
         return new ReportUseCaseImpl(transactionGateway);
+    }
+
+    // Scopes
+    @Bean
+    public FindScopeByNameUseCase findScopeByNameUseCase(ScopeGateway scopeGateway) {
+        return new FindScopeByNameUseCaseImpl(scopeGateway);
     }
 }

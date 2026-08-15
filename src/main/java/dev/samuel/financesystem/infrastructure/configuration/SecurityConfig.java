@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
-                        .requestMatchers(HttpMethod.POST, "/**").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
                         .requestMatchers(HttpMethod.PUT, "/**").hasAuthority("SCOPE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated()

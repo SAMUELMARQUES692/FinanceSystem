@@ -1,7 +1,9 @@
 package dev.samuel.financesystem.infrastructure.gateway;
 
+import dev.samuel.financesystem.core.entities.Scope;
 import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.gateway.UserGateway;
+import dev.samuel.financesystem.infrastructure.mapper.ScopeMapper;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
@@ -19,25 +21,24 @@ import java.util.Optional;
 public class UserGatewayImpl implements UserGateway {
 
     private final UserRepository userRepository;
-    private final ScopeRepository scopeRepository;
+    private final ScopeGatewayImpl scopeGateway;
+    private final ScopeMapper scopeMapper;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public User createUser(User user) {
-        dev.samuel.financesystem.infrastructure.persistence.User persistenceUser = userMapper.toPersistenceEntity(user);
 
-        // Busca os scopes no banco pelos ids
-        if (user.scopes() != null && !user.scopes().isEmpty()) {
-            List<Long> scopeIds = user.scopes().stream()
-                    .map(scope -> scope.id())
-                    .toList();
-
-            List<dev.samuel.financesystem.infrastructure.persistence.Scope> scopes = scopeRepository.findAllById(scopeIds);
-            persistenceUser.setScopes(scopes);
+        if (userRepository.existsByEmail(user.email())) {
+            throw new RuntimeException("Email " + user.email() + " já esta em uso");
         }
 
+        Scope scopeUser = scopeGateway.findByName("USER");
+
+        dev.samuel.financesystem.infrastructure.persistence.Scope convertScope = scopeMapper.toPersistenceEntity(scopeUser);
+        dev.samuel.financesystem.infrastructure.persistence.User persistenceUser = userMapper.toPersistenceEntity(user);
+        persistenceUser.setScopes(List.of(convertScope));
         persistenceUser.setPassword(passwordEncoder.encode(user.password()));
         dev.samuel.financesystem.infrastructure.persistence.User salvo = userRepository.save(persistenceUser);
         return userMapper.toDomain(salvo);
@@ -66,6 +67,7 @@ public class UserGatewayImpl implements UserGateway {
 
     @Override
     public User findByEmail(String email) {
+
         dev.samuel.financesystem.infrastructure.persistence.User usuario = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         return userMapper.toDomain(usuario);

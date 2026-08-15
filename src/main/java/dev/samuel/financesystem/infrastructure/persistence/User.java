@@ -33,9 +33,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
