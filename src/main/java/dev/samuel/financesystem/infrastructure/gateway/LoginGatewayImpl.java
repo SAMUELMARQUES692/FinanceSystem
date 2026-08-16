@@ -5,20 +5,11 @@ import dev.samuel.financesystem.core.usecases.login.LoginInput;
 import dev.samuel.financesystem.core.usecases.login.LoginOutput;
 import dev.samuel.financesystem.infrastructure.configuration.TokenService;
 import dev.samuel.financesystem.infrastructure.exception.UserOrPasswordIncorectException;
-import dev.samuel.financesystem.infrastructure.persistence.Scope;
 import dev.samuel.financesystem.infrastructure.persistence.User;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

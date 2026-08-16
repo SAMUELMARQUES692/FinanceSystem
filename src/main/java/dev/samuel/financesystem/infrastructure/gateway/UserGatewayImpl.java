@@ -5,7 +5,6 @@ import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.gateway.UserGateway;
 import dev.samuel.financesystem.infrastructure.mapper.ScopeMapper;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
-import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,17 +1,12 @@
 package dev.samuel.financesystem.infrastructure.gateway;
 
 import dev.samuel.financesystem.core.entities.Account;
-import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
-import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
-import dev.samuel.financesystem.infrastructure.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
