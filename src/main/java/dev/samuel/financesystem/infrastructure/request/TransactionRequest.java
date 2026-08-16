@@ -3,9 +3,11 @@ package dev.samuel.financesystem.infrastructure.request;
 import dev.samuel.financesystem.core.enums.Type;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
+@Builder
 public record TransactionRequest(
 
         @NotNull
