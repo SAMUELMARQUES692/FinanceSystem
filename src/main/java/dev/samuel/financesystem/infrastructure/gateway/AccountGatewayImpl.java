@@ -2,6 +2,7 @@ package dev.samuel.financesystem.infrastructure.gateway;
 
 import dev.samuel.financesystem.core.entities.Account;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
+import dev.samuel.financesystem.infrastructure.exception.AccountNotFoundException;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class AccountGatewayImpl implements AccountGateway {
     public Account findByUserId(Long userId) {
         return accountRepository.findByUserId(userId)
                 .map(accountMapper::toDomain)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
 
     @Cacheable(value = "balance", key = "#userId")
@@ -39,6 +40,6 @@ public class AccountGatewayImpl implements AccountGateway {
     public Account getBalance(Long userId) {
         return accountRepository.findByUserId(userId)
                 .map(accountMapper::toDomain)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
 }

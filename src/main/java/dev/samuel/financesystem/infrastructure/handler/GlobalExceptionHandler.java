@@ -44,6 +44,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> accountNotFound(AccountNotFoundException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "ACCOUNT_NOT_FOUND",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(OriginAccountNotFoundException.class)
     public ResponseEntity<ErrorResponse> originNotFound(OriginAccountNotFoundException exception) {
         ErrorResponse error = new ErrorResponse(
