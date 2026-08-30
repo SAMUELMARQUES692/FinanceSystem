@@ -3,6 +3,7 @@ package dev.samuel.financesystem.infrastructure.gateway;
 import dev.samuel.financesystem.core.entities.Scope;
 import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.gateway.UserGateway;
+import dev.samuel.financesystem.infrastructure.exception.EmailAlreadyUseException;
 import dev.samuel.financesystem.infrastructure.mapper.ScopeMapper;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
@@ -29,7 +30,7 @@ public class UserGatewayImpl implements UserGateway {
     public User createUser(User user) {
 
         if (userRepository.existsByEmail(user.email())) {
-            throw new RuntimeException("Email " + user.email() + " já esta em uso");
+            throw new EmailAlreadyUseException("Email " + user.email() + " já esta em uso");
         }
 
         Scope scopeUser = scopeGateway.findByName("USER");

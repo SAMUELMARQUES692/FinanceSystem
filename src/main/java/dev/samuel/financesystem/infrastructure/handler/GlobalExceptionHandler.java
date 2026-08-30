@@ -74,6 +74,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
     }
 
+    @ExceptionHandler(EmailAlreadyUseException.class)
+    public ResponseEntity<ErrorResponse> emailAlreadyUse(EmailAlreadyUseException exception) {
+        ErrorResponse error = new ErrorResponse(
+                "EMAIL_CONFLICT",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
     @ExceptionHandler(SameAccountException.class)
     public ResponseEntity<ErrorResponse> sameAccount(SameAccountException exception) {
         ErrorResponse error = new ErrorResponse(
