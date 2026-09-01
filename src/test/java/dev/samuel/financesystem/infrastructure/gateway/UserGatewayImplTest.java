@@ -31,9 +31,6 @@ class UserGatewayImplTest {
     ScopeGatewayImpl scopeGateway;
 
     @Mock
-    ScopeRepository scopeRepository;
-
-    @Mock
     ScopeMapper scopeMapper;
 
     @Mock
@@ -90,13 +87,79 @@ class UserGatewayImplTest {
 
     @Test
     void updateUser() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findById(userInfra.getId())).thenReturn(Optional.of(userInfra));
+        Mockito.when(userMapper.toPersistenceEntity(userCore)).thenReturn(userInfra);
+        Mockito.when(passwordEncoder.encode(userCore.password())).thenReturn("Password");
+        Mockito.when(userRepository.save(userInfra)).thenReturn(userInfra);
+        Mockito.when(userMapper.toDomain(userInfra)).thenReturn(userCore);
+
+        userGateway.updateUser(userInfra.getId(), userCore);
+
+        Mockito.verify(userRepository).findById(userInfra.getId());
+        Mockito.verify(userMapper).toPersistenceEntity(userCore);
+        Mockito.verify(passwordEncoder).encode(userCore.password());
+        Mockito.verify(userRepository).save(userInfra);
+        Mockito.verify(userMapper).toDomain(userInfra);
     }
 
     @Test
     void deleteUser() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findById(userInfra.getId())).thenReturn(Optional.of(userInfra));
+
+        userGateway.deleteUser(userInfra.getId());
+
+        Mockito.verify(userRepository).findById(userInfra.getId());
+        Mockito.verify(userRepository).deleteById(userInfra.getId());
     }
 
     @Test
     void findByEmail() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findByEmail(userInfra.getEmail())).thenReturn(Optional.of(userInfra));
+        Mockito.when(userMapper.toDomain(userInfra)).thenReturn(userCore);
+
+        userGateway.findByEmail(userInfra.getEmail());
+
+        Mockito.verify(userRepository).findByEmail(userInfra.getEmail());
+        Mockito.verify(userMapper).toDomain(userInfra);
     }
 }

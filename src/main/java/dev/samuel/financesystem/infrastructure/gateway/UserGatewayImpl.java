@@ -28,7 +28,6 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     @Transactional
     public User createUser(User user) {
-
         if (userRepository.existsByEmail(user.email())) {
             throw new EmailAlreadyUseException("Email " + user.email() + " já esta em uso");
         }
@@ -66,7 +65,6 @@ public class UserGatewayImpl implements UserGateway {
 
     @Override
     public User findByEmail(String email) {
-
         dev.samuel.financesystem.infrastructure.persistence.User usuario = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         return userMapper.toDomain(usuario);
