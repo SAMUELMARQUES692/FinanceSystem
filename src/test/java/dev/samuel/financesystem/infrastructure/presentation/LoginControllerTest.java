@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import dev.samuel.financesystem.configuration.BaseIntegrationTest;
-import dev.samuel.financesystem.core.usecases.login.LoginInput;
-import dev.samuel.financesystem.core.usecases.login.LoginOutput;
 import dev.samuel.financesystem.infrastructure.persistence.User;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import dev.samuel.financesystem.infrastructure.request.LoginRequest;
@@ -17,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,7 +34,6 @@ class LoginControllerTest extends BaseIntegrationTest {
 
     @Test
     void login() throws Exception {
-
         User userInfra = userRepository.save(
                 User.builder()
                         .name("Name Test")
