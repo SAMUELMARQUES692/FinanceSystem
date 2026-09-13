@@ -31,7 +31,8 @@ public class TokenService {
                 .issuer("finance-system")
                 .issuedAt(agora)
                 .expiresAt(agora.plus(1, ChronoUnit.HOURS))
-                .subject(user.getEmail())
+                .subject(user.getId().toString())
+                .claim("email", user.getEmail())
                 .claim("scope", scopesStr)
                 .build();
 
