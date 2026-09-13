@@ -4,6 +4,7 @@ import dev.samuel.financesystem.core.entities.Account;
 import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCase;
 import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
@@ -25,6 +26,7 @@ import java.util.List;
 public class AccountController {
 
     private final CreateAccountUseCase createAccountUseCase;
+    private final FindAccountByUserIdUseCase findAccountByUserIdUseCase;
     private final AccountMapper accountMapper;
     private final AccountGateway accountGateway;
 
@@ -53,6 +55,13 @@ public class AccountController {
     public ResponseEntity<AccountResponse> getBalance(JwtAuthenticationToken token) {
         Long userId = Long.parseLong(token.getName());
         Account account = accountGateway.getBalance(userId);
+        return ResponseEntity.ok(accountMapper.toAccountResponse(account));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<AccountResponse> findByuserId(JwtAuthenticationToken token) {
+        Long userId = Long.parseLong(token.getName());
+        Account account = findAccountByUserIdUseCase.execute(userId);
         return ResponseEntity.ok(accountMapper.toAccountResponse(account));
     }
 
