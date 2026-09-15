@@ -3,6 +3,7 @@ package dev.samuel.financesystem.infrastructure.presentation;
 import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
+import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCase;
 import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -22,6 +25,7 @@ public class UserController {
     private final UpdateUseCase updateUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final FindByEmailUseCase findByEmailUseCase;
+    private final FindAllUsersUseCase findAllUsersUseCase;
     private final UserMapper userMapper;
 
     @PostMapping
@@ -51,6 +55,13 @@ public class UserController {
         User findUser = findByEmailUseCase.execute(email);
         UserResponse response = userMapper.toUserResponse(findUser);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAllUsers() {
+        List<User> findAll = findAllUsersUseCase.execute();
+        List<UserResponse> responses = userMapper.toUserResponseList(findAll);
+        return ResponseEntity.ok(responses);
     }
 
 }

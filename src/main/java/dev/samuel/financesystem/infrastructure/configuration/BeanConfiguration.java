@@ -9,6 +9,8 @@ import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
 import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCase;
+import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCase;
+import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCase;
 import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
@@ -51,6 +53,11 @@ public class BeanConfiguration {
     @Bean
     public FindByEmailUseCase findByEmailUseCase(UserGateway userGateway) {
         return new FindByEmailUseCaseImpl(userGateway);
+    }
+
+    @Bean
+    public FindAllUsersUseCase findAllUsersUseCase(UserGateway userGateway) {
+        return new FindAllUsersUseCaseImpl(userGateway);
     }
 
     // Account

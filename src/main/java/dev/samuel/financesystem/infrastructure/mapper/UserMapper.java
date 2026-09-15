@@ -29,6 +29,9 @@ public interface UserMapper {
     @Mapping(target = "scopes", source = "scopes", qualifiedByName = "mapScopesToStrings")
     UserResponse toUserResponse(dev.samuel.financesystem.core.entities.User user);
 
+    @Mapping(target = "scopes", source = "scopes", qualifiedByName = "mapScopesToStrings")
+    List<UserResponse> toUserResponseList(List<dev.samuel.financesystem.core.entities.User> users);
+
     @Named("mapScopeIdsToScopeEntities")
     default List<dev.samuel.financesystem.core.entities.Scope> mapScopeIdsToScopeEntities(List<Long> scopeIds) {
         if (scopeIds == null) return List.of();

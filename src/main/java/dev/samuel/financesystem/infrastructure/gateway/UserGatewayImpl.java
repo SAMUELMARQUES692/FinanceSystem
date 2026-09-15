@@ -69,4 +69,11 @@ public class UserGatewayImpl implements UserGateway {
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         return userMapper.toDomain(usuario);
     }
+
+    @Override
+    public List<User> findAllUsers() {
+       return userRepository.findAll().stream()
+                .map(userMapper::toDomain)
+                .toList();
+    }
 }
