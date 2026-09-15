@@ -10,6 +10,7 @@ public record Account(
         BigDecimal balance,
         String agency,
         String number,
+        String pix,
         LocalDateTime createdAt
 
 ) implements Serializable {
@@ -24,6 +25,7 @@ public record Account(
         private BigDecimal balance;
         private String agency;
         private String number;
+        private String pix;
         private LocalDateTime createdAt;
 
         public Builder id(Long id) {
@@ -51,13 +53,18 @@ public record Account(
             return this;
         }
 
+        public Builder pix(String pix) {
+            this.pix = pix;
+            return this;
+        }
+
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
         public Account build() {
-            return new Account(id, userId, balance, agency, number, createdAt);
+            return new Account(id, userId, balance, agency, number, pix, createdAt);
         }
     }
 

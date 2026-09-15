@@ -11,6 +11,7 @@ public record AccountResponse(
         BigDecimal balance,
         String agency,
         String number,
+        String pix,
 
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime createdAt

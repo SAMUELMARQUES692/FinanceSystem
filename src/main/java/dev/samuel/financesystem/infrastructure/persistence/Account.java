@@ -35,9 +35,14 @@ public class Account {
     @Column(length = 20, nullable = false, unique = true)
     private String number;
 
-    @CreationTimestamp
+    @Column(length = 50, unique = true)
+    private String pix;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

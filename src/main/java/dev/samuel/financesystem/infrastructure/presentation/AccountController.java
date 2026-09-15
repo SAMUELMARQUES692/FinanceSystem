@@ -43,6 +43,7 @@ public class AccountController {
                 request.balance(),
                 request.agency(),
                 request.number(),
+                request.pix(),
                 null            // createdAt
         );
 

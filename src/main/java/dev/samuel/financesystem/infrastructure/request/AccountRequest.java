@@ -21,8 +21,10 @@ public record AccountRequest(
 
         @NotBlank
         @Size(max = 20)
-        String number
+        String number,
 
+        @Size(max = 50)
+        String pix
 
 ) {
 }
