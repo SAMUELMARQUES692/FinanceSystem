@@ -12,4 +12,6 @@ public interface AccountGateway {
 
     Account getBalance(Long userId);
 
+    Account updateAccount(Long id, Account account);
+
 }

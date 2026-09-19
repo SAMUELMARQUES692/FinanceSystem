@@ -21,6 +21,8 @@ import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
 import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCase;
 import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -69,6 +71,11 @@ public class BeanConfiguration {
     @Bean
     public FindAccountByUserIdUseCase findAccountByUserIdUseCase(AccountGateway accountGateway) {
         return new FindAccountByUserIdUseCaseImpl(accountGateway);
+    }
+
+    @Bean
+    public UpdateAccountUseCase updateAccountUseCase(AccountGateway accountGateway) {
+        return new UpdateAccountUseCaseImpl(accountGateway);
     }
 
     // Trasactions

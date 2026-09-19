@@ -5,6 +5,8 @@ import dev.samuel.financesystem.infrastructure.request.AccountRequest;
 import dev.samuel.financesystem.infrastructure.response.AccountResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.TargetType;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {

@@ -6,9 +6,11 @@ import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCase;
 import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
+import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.request.AccountRequest;
+import dev.samuel.financesystem.infrastructure.request.UpdateAccountRequest;
 import dev.samuel.financesystem.infrastructure.response.AccountResponse;
 import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
 import jakarta.validation.Valid;
@@ -27,6 +29,7 @@ public class AccountController {
 
     private final CreateAccountUseCase createAccountUseCase;
     private final FindAccountByUserIdUseCase findAccountByUserIdUseCase;
+    private final UpdateAccountUseCase updateAccountUseCase;
     private final AccountMapper accountMapper;
     private final AccountGateway accountGateway;
 
@@ -64,6 +67,29 @@ public class AccountController {
         Long userId = Long.parseLong(token.getName());
         Account account = findAccountByUserIdUseCase.execute(userId);
         return ResponseEntity.ok(accountMapper.toAccountResponse(account));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<AccountResponse> updateAccount(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateAccountRequest request,
+            JwtAuthenticationToken token) {
+
+        Long userId = Long.parseLong(token.getName());
+
+        Account updateAccount = new Account(
+                null,           // id
+                userId,         // userId
+                null,           // balance
+                null,
+                null,
+                request.pix(),
+                null            // createdAt
+        );
+
+        Account update = updateAccountUseCase.execute(id, updateAccount);
+        AccountResponse response = accountMapper.toAccountResponse(update);
+        return ResponseEntity.ok(response);
     }
 
 }

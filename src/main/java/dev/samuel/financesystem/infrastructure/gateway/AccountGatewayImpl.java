@@ -42,4 +42,21 @@ public class AccountGatewayImpl implements AccountGateway {
                 .map(accountMapper::toDomain)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
+
+    @Override
+    public Account updateAccount(Long id, Account account) {
+        dev.samuel.financesystem.infrastructure.persistence.Account accountInfra = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        dev.samuel.financesystem.infrastructure.persistence.Account persistenceAccount = accountMapper.toPersistenceEntity(account);
+
+        persistenceAccount.setId(accountInfra.getId());
+        persistenceAccount.setBalance(accountInfra.getBalance());
+        persistenceAccount.setAgency(accountInfra.getAgency());
+        persistenceAccount.setNumber(accountInfra.getNumber());
+        persistenceAccount.setCreatedAt(accountInfra.getCreatedAt());
+
+        dev.samuel.financesystem.infrastructure.persistence.Account saved = accountRepository.save(persistenceAccount);
+        return accountMapper.toDomain(saved);
+    }
 }
