@@ -1,30 +1,32 @@
 package dev.samuel.financesystem.infrastructure.configuration;
 
 import dev.samuel.financesystem.core.gateway.*;
-import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
-import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
-import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
-import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCase;
-import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCase;
-import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCase;
-import dev.samuel.financesystem.core.usecases.findScope.FindScopeByNameUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
-import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
+import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCase;
+import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCase;
+import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByUserIdUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByUserIdUseCase;
+import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCase;
+import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.scope.findScope.FindScopeByNameUseCase;
+import dev.samuel.financesystem.core.usecases.scope.findScope.FindScopeByNameUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCase;
+import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
-import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCase;
-import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCase;
-import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
-import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
+import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -76,6 +78,11 @@ public class BeanConfiguration {
     @Bean
     public UpdateAccountUseCase updateAccountUseCase(AccountGateway accountGateway) {
         return new UpdateAccountUseCaseImpl(accountGateway);
+    }
+
+    @Bean
+    public FindByIdUseCase findByIdUseCase(AccountGateway accountGateway) {
+        return new FindByIdUseCaseImpl(accountGateway);
     }
 
     // Trasactions

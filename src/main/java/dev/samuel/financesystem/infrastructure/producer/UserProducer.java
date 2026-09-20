@@ -18,13 +18,13 @@ public class UserProducer {
 
     public void publishEvent(Transaction transaction, String emailTo) {
         var emailResponse = new EmailMessage();
-        emailResponse.setUserId(transaction.getOriginId());
+        emailResponse.setUserId(transaction.getOrigin().getId());
         emailResponse.setEmailTo(emailTo);
         emailResponse.setEmailSubject("Transaction made on your account");
         emailResponse.setBody("A transfer of R$ " + transaction.getAmount() +
                 " was made. Description: " + transaction.getDescription());
 
-        log.info("Publishing transfer event for account: {}", transaction.getOriginId());
+        log.info("Publishing transfer event for account: {}", transaction.getOrigin().getId());
 
         rabbitTemplate.convertAndSend(
                 "",

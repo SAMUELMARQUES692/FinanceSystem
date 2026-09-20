@@ -5,8 +5,8 @@ import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.enums.Status;
 import dev.samuel.financesystem.core.enums.Type;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
-import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
-import dev.samuel.financesystem.core.usecases.transferUse.TransferUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.request.TransactionRequest;
 import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
@@ -36,18 +36,16 @@ public class TransactionController {
 
         Long userId = Long.parseLong(token.getName());
         Account originAccount = accountGateway.findByUserId(userId); // <- busca conta pelo userId
+        Account destinationAccount = accountGateway.findById(request.destinationId());
 
-        dev.samuel.financesystem.core.entities.Transaction transaction =
-                new dev.samuel.financesystem.core.entities.Transaction(
-                        null,
-                        originAccount.id(), // <- id da conta, não do usuário
-                        request.destinationId(),
-                        request.amount(),
-                        Type.TRANSFER,
-                        Status.PENDING,
-                        request.description(),
-                        null
-                );
+        Transaction transaction = Transaction.builder()
+                .origin(originAccount)
+                .destination(destinationAccount)
+                .amount(request.amount())
+                .type(Type.TRANSFER)
+                .status(Status.PENDING)
+                .description(request.description())
+                .build();
 
         dev.samuel.financesystem.core.entities.Transaction result = transferUseCase.execute(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionMapper.toTransactionResponse(result));

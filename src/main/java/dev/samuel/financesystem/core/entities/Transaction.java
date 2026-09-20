@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 public record Transaction(
         Long id,
-        Long originId,
-        Long destinationId,
+        Account origin,
+        Account destination,
         BigDecimal amount,
         Type type,
         Status status,
@@ -23,8 +23,8 @@ public record Transaction(
 
     public static class Builder {
         private Long id;
-        private Long originId;
-        private Long destinationId;
+        private Account origin;
+        private Account destination;
         private BigDecimal amount;
         private Type type;
         private Status status;
@@ -36,13 +36,13 @@ public record Transaction(
             return this;
         }
 
-        public Builder originId(Long originId) {
-            this.originId = originId;
+        public Builder origin(Account origin) {
+            this.origin = origin;
             return this;
         }
 
-        public Builder destinationId(Long destinationId) {
-            this.destinationId = destinationId;
+        public Builder destination(Account destination) {
+            this.destination = destination;
             return this;
         }
 
@@ -72,7 +72,7 @@ public record Transaction(
         }
 
         public Transaction build() {
-            return new Transaction(id, originId, destinationId, amount, type, status, description, createdAt);
+            return new Transaction(id, origin, destination, amount, type, status, description, createdAt);
         }
     }
 }

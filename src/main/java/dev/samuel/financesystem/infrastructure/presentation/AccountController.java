@@ -1,26 +1,21 @@
 package dev.samuel.financesystem.infrastructure.presentation;
 
 import dev.samuel.financesystem.core.entities.Account;
-import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
-import dev.samuel.financesystem.core.usecases.createAccount.CreateAccountUseCase;
-import dev.samuel.financesystem.core.usecases.findAccount.FindAccountByUserIdUseCase;
-import dev.samuel.financesystem.core.usecases.reportUse.ReportUseCase;
-import dev.samuel.financesystem.core.usecases.updateAccount.UpdateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCase;
+import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByUserIdUseCase;
+import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
+import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
-import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.request.AccountRequest;
 import dev.samuel.financesystem.infrastructure.request.UpdateAccountRequest;
 import dev.samuel.financesystem.infrastructure.response.AccountResponse;
-import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +25,7 @@ public class AccountController {
     private final CreateAccountUseCase createAccountUseCase;
     private final FindAccountByUserIdUseCase findAccountByUserIdUseCase;
     private final UpdateAccountUseCase updateAccountUseCase;
+    private final FindByIdUseCase findByIdUseCase;
     private final AccountMapper accountMapper;
     private final AccountGateway accountGateway;
 
@@ -90,6 +86,11 @@ public class AccountController {
         Account update = updateAccountUseCase.execute(id, updateAccount);
         AccountResponse response = accountMapper.toAccountResponse(update);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<AccountResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(accountMapper.toAccountResponse(findByIdUseCase.execute(id)));
     }
 
 }

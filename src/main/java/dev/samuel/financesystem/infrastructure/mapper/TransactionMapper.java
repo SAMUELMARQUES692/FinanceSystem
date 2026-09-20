@@ -20,8 +20,8 @@ public interface TransactionMapper {
 
     // Request → Core
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "originId", ignore = true)
-    @Mapping(target = "destinationId", ignore = true)
+    @Mapping(target = "origin", ignore = true)
+    @Mapping(target = "destination", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     dev.samuel.financesystem.core.entities.Transaction toEntity(TransactionRequest request);
 

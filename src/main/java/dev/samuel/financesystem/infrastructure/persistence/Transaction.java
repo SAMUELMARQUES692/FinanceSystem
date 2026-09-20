@@ -25,11 +25,13 @@ public class Transaction {
     @SequenceGenerator(name = "transactions_seq", sequenceName = "transactions_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "origin_id", nullable = false)
-    private Long originId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "origin_id", nullable = false)
+    private Account origin;
 
-    @Column(name = "destination_id", nullable = false)
-    private Long destinationId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "destination_id", nullable = false)
+    private Account destination;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;

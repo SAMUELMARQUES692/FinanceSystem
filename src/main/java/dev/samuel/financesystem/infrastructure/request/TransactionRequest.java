@@ -1,6 +1,7 @@
 package dev.samuel.financesystem.infrastructure.request;
 
 import dev.samuel.financesystem.core.enums.Type;
+import dev.samuel.financesystem.infrastructure.persistence.Account;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

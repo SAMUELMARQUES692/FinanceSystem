@@ -39,10 +39,10 @@ public class TransactionGatewayImpl implements TransactionGateway {
     public Transaction transfer(Transaction transaction) {
 
         // Busca as contas
-        Account origin = accountRepository.findById(transaction.originId())
+        Account origin = accountRepository.findById(transaction.origin().id())
                 .orElseThrow(() -> new OriginAccountNotFoundException("Origin account not found"));
 
-        Account destination = accountRepository.findById(transaction.destinationId())
+        Account destination = accountRepository.findById(transaction.destination().id())
                 .orElseThrow(() -> new DestinationAccountNotFoundException("Destination account not found"));
 
         // Valida se não é a mesma conta <- veio antes do saldo

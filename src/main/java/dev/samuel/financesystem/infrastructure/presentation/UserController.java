@@ -1,11 +1,11 @@
 package dev.samuel.financesystem.infrastructure.presentation;
 
 import dev.samuel.financesystem.core.entities.User;
-import dev.samuel.financesystem.core.usecases.createUser.CreateUserUseCase;
-import dev.samuel.financesystem.core.usecases.deleteUser.DeleteUserUseCase;
-import dev.samuel.financesystem.core.usecases.findAllUsers.FindAllUsersUseCase;
-import dev.samuel.financesystem.core.usecases.findUser.FindByEmailUseCase;
-import dev.samuel.financesystem.core.usecases.updateUser.UpdateUseCase;
+import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCase;
+import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCase;
+import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCase;
+import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCase;
+import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.request.UserRequest;
 import dev.samuel.financesystem.infrastructure.response.UserResponse;

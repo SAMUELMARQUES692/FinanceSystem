@@ -59,4 +59,11 @@ public class AccountGatewayImpl implements AccountGateway {
         dev.samuel.financesystem.infrastructure.persistence.Account saved = accountRepository.save(persistenceAccount);
         return accountMapper.toDomain(saved);
     }
+
+    @Override
+    public Account findById(Long id) {
+        dev.samuel.financesystem.infrastructure.persistence.Account accountInfra = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        return accountMapper.toDomain(accountInfra);
+    }
 }

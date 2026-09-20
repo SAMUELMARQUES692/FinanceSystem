@@ -14,4 +14,6 @@ public interface AccountGateway {
 
     Account updateAccount(Long id, Account account);
 
+    Account findById(Long id);
+
 }
