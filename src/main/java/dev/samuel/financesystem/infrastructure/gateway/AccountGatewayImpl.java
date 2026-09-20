@@ -51,6 +51,7 @@ public class AccountGatewayImpl implements AccountGateway {
         dev.samuel.financesystem.infrastructure.persistence.Account persistenceAccount = accountMapper.toPersistenceEntity(account);
 
         persistenceAccount.setId(accountInfra.getId());
+        persistenceAccount.setUserId(accountInfra.getUserId());
         persistenceAccount.setBalance(accountInfra.getBalance());
         persistenceAccount.setAgency(accountInfra.getAgency());
         persistenceAccount.setNumber(accountInfra.getNumber());

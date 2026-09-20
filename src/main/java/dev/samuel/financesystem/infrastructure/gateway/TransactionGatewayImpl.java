@@ -80,7 +80,10 @@ public class TransactionGatewayImpl implements TransactionGateway {
 
     @Override
     public List<Transaction> findByAccountId(Long accountId) {
-        return transactionRepository.findByOriginIdOrDestinationId(accountId, accountId).stream()
+        Account accountInfra = accountRepository.findById(accountId)
+                .orElseThrow(() -> new OriginAccountNotFoundException("Account not found"));
+
+        return transactionRepository.findByOriginIdOrDestinationId(accountInfra.getId(), accountInfra.getId()).stream()
                 .map(transactionMapper::toDomain)
                 .toList();
     }
