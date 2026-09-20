@@ -66,4 +66,11 @@ public class AccountGatewayImpl implements AccountGateway {
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         return accountMapper.toDomain(accountInfra);
     }
+
+    @Override
+    public Account findByPix(String pix) {
+        dev.samuel.financesystem.infrastructure.persistence.Account accountInfra = accountRepository.findByPix(pix)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        return accountMapper.toDomain(accountInfra);
+    }
 }

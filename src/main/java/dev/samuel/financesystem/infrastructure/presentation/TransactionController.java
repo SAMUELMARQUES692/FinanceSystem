@@ -6,7 +6,7 @@ import dev.samuel.financesystem.core.enums.Status;
 import dev.samuel.financesystem.core.enums.Type;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
-import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.TransferByPixUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.request.TransactionRequest;
 import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    private final TransferUseCase transferUseCase;
+    private final TransferByPixUseCase transferUseCase;
     private final TransactionMapper transactionMapper;
     private final AccountGateway accountGateway;
     private final ReportUseCase reportUseCase;
@@ -36,7 +36,7 @@ public class TransactionController {
 
         Long userId = Long.parseLong(token.getName());
         Account originAccount = accountGateway.findByUserId(userId); // <- busca conta pelo userId
-        Account destinationAccount = accountGateway.findById(request.destinationId());
+        Account destinationAccount = accountGateway.findByPix(request.pix());
 
         Transaction transaction = Transaction.builder()
                 .origin(originAccount)

@@ -16,4 +16,6 @@ public interface AccountGateway {
 
     Account findById(Long id);
 
+    Account findByPix(String pix);
+
 }

@@ -1,14 +1,14 @@
-package dev.samuel.financesystem.core.usecases.transactions.transferUse;
+package dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase;
 
 import dev.samuel.financesystem.core.entities.Transaction;
 import dev.samuel.financesystem.core.gateway.TransactionGateway;
 
-public class TransferUseCaseImpl implements TransferUseCase {
+public class TransferByPixUseCaseImpl implements TransferByPixUseCase {
 
     private final TransactionGateway transactionGateway;
 
 
-    public TransferUseCaseImpl(TransactionGateway transactionGateway) {
+    public TransferByPixUseCaseImpl(TransactionGateway transactionGateway) {
         this.transactionGateway = transactionGateway;
     }
 

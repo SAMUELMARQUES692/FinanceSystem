@@ -5,6 +5,8 @@ import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccoun
 import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.account.findAccountByPix.FindAccountByPixUseCase;
+import dev.samuel.financesystem.core.usecases.account.findAccountByPix.FindAccountByPixUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCase;
@@ -21,8 +23,8 @@ import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
 import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCase;
-import dev.samuel.financesystem.core.usecases.transactions.transferUse.TransferUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.TransferByPixUseCase;
+import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.TransferByPixUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
@@ -85,10 +87,15 @@ public class BeanConfiguration {
         return new FindByIdUseCaseImpl(accountGateway);
     }
 
+    @Bean
+    public FindAccountByPixUseCase findAccountByPixUseCase(AccountGateway accountGateway) {
+        return new FindAccountByPixUseCaseImpl(accountGateway);
+    }
+
     // Trasactions
     @Bean
-    public TransferUseCase transferUseCase(TransactionGateway transactionGateway) {
-        return new TransferUseCaseImpl(transactionGateway);
+    public TransferByPixUseCase transferUseCase(TransactionGateway transactionGateway) {
+        return new TransferByPixUseCaseImpl(transactionGateway);
     }
 
     @Bean

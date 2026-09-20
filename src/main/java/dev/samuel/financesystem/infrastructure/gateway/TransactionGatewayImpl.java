@@ -42,7 +42,7 @@ public class TransactionGatewayImpl implements TransactionGateway {
         Account origin = accountRepository.findById(transaction.origin().id())
                 .orElseThrow(() -> new OriginAccountNotFoundException("Origin account not found"));
 
-        Account destination = accountRepository.findById(transaction.destination().id())
+        Account destination = accountRepository.findByPix(transaction.destination().pix())
                 .orElseThrow(() -> new DestinationAccountNotFoundException("Destination account not found"));
 
         // Valida se não é a mesma conta <- veio antes do saldo
@@ -84,5 +84,7 @@ public class TransactionGatewayImpl implements TransactionGateway {
                 .map(transactionMapper::toDomain)
                 .toList();
     }
+
+
 }
 

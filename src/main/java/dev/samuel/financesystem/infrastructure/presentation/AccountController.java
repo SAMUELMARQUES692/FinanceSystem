@@ -5,6 +5,7 @@ import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByUserIdUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
+import dev.samuel.financesystem.core.usecases.account.findAccountByPix.FindAccountByPixUseCase;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.request.AccountRequest;
@@ -26,6 +27,7 @@ public class AccountController {
     private final FindAccountByUserIdUseCase findAccountByUserIdUseCase;
     private final UpdateAccountUseCase updateAccountUseCase;
     private final FindByIdUseCase findByIdUseCase;
+    private final FindAccountByPixUseCase findAccountByPixUseCase;
     private final AccountMapper accountMapper;
     private final AccountGateway accountGateway;
 
@@ -91,6 +93,11 @@ public class AccountController {
     @GetMapping("{id}")
     public ResponseEntity<AccountResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(accountMapper.toAccountResponse(findByIdUseCase.execute(id)));
+    }
+
+    @GetMapping("/pix/{pix}")
+    public ResponseEntity<AccountResponse> findByPix(@PathVariable String pix) {
+        return ResponseEntity.ok(accountMapper.toAccountResponse(findAccountByPixUseCase.execute(pix)));
     }
 
 }
