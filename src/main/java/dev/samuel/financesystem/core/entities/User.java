@@ -7,6 +7,7 @@ public record User(
 
         Long id,
         String name,
+        String cpf,
         String email,
         String password,
         LocalDateTime createdAt,
@@ -20,6 +21,7 @@ public record User(
     public static class Builder {
         private Long id;
         private String name;
+        private String cpf;
         private String email;
         private String password;
         private LocalDateTime createdAt;
@@ -32,6 +34,11 @@ public record User(
 
         public Builder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder cpf(String cpf) {
+            this.cpf = cpf;
             return this;
         }
 
@@ -56,7 +63,7 @@ public record User(
         }
 
         public User build() {
-            return new User(id, name, email, password, createdAt, scopes);
+            return new User(id, name, cpf, email, password, createdAt, scopes);
         }
 
     }

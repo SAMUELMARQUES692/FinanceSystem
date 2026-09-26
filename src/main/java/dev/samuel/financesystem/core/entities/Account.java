@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record Account(
         Long id,
-        Long userId,
+        User user,
         BigDecimal balance,
         String agency,
         String number,
@@ -21,7 +21,7 @@ public record Account(
 
     public static class Builder {
         private Long id;
-        private Long userId;
+        private User user;
         private BigDecimal balance;
         private String agency;
         private String number;
@@ -33,8 +33,8 @@ public record Account(
             return this;
         }
 
-        public Builder userId(Long userId) {
-            this.userId = userId;
+        public Builder user(User user) {
+            this.user = user;
             return this;
         }
 
@@ -64,7 +64,7 @@ public record Account(
         }
 
         public Account build() {
-            return new Account(id, userId, balance, agency, number, pix, createdAt);
+            return new Account(id, user, balance, agency, number, pix, createdAt);
         }
     }
 

@@ -4,11 +4,12 @@ import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.usecases.user.createUser.CreateUserUseCase;
 import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCase;
 import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCase;
-import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCase;
+import dev.samuel.financesystem.core.usecases.user.findUserByEmail.FindByEmailUseCase;
 import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.request.UserRequest;
 import dev.samuel.financesystem.infrastructure.response.UserResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest request) {
         User newUser = userMapper.toEntity(request);
         User createdUser = createUserUseCase.execute(newUser);
         UserResponse response = userMapper.toUserResponse(createdUser);
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest request) {
         User newUser = userMapper.toEntity(request);
         User updateUser = updateUseCase.execute(id, newUser);
         UserResponse response = userMapper.toUserResponse(updateUser);

@@ -1,7 +1,9 @@
 package dev.samuel.financesystem.infrastructure.presentation;
 
 import dev.samuel.financesystem.core.entities.Account;
+import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
+import dev.samuel.financesystem.core.gateway.UserGateway;
 import dev.samuel.financesystem.core.usecases.account.createAccount.CreateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByUserIdUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
@@ -30,6 +32,7 @@ public class AccountController {
     private final FindAccountByPixUseCase findAccountByPixUseCase;
     private final AccountMapper accountMapper;
     private final AccountGateway accountGateway;
+    private final UserGateway userGateway;
 
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
@@ -37,8 +40,19 @@ public class AccountController {
             JwtAuthenticationToken token) {
 
         Long userId = Long.parseLong(token.getName()); // token.getName() retorna o subject
+        User user = userGateway.findUserById(userId);
 
-        Account newAccount = new Account(
+        Account newAccount = Account.builder()
+                .id(null)
+                .user(user)
+                .balance(request.balance())
+                .agency(request.agency())
+                .number(request.number())
+                .pix(request.pix())
+                .createdAt(null)
+                .build();
+
+      /*  Account newAccount = new Account(
                 null,           // id
                 userId,         // userId
                 request.balance(),
@@ -46,7 +60,7 @@ public class AccountController {
                 request.number(),
                 request.pix(),
                 null            // createdAt
-        );
+        );*/
 
         Account createdAccount = createAccountUseCase.execute(newAccount);
         AccountResponse response = accountMapper.toAccountResponse(createdAccount);
@@ -74,8 +88,14 @@ public class AccountController {
             JwtAuthenticationToken token) {
 
         Long userId = Long.parseLong(token.getName());
+        User user = userGateway.findUserById(userId);
 
-        Account updateAccount = new Account(
+        Account updateAccount = Account.builder()
+                .user(user)
+                .pix(request.pix())
+                .build();
+
+       /* Account updateAccount = new Account(
                 null,           // id
                 userId,         // userId
                 null,           // balance
@@ -83,7 +103,7 @@ public class AccountController {
                 null,
                 request.pix(),
                 null            // createdAt
-        );
+        );*/
 
         Account update = updateAccountUseCase.execute(id, updateAccount);
         AccountResponse response = accountMapper.toAccountResponse(update);

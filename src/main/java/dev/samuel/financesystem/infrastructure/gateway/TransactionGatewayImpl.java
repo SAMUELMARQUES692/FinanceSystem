@@ -45,8 +45,11 @@ public class TransactionGatewayImpl implements TransactionGateway {
         Account destination = accountRepository.findByPix(transaction.destination().pix())
                 .orElseThrow(() -> new DestinationAccountNotFoundException("Destination account not found"));
 
+        User user = userRepository.findById(destination.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         // Valida se não é a mesma conta <- veio antes do saldo
-        if (origin.getUserId().equals(destination.getUserId())) {
+        if (origin.getUser().equals(destination.getUser())) {
             throw new SameAccountException("Origin account can't be equals destination account");
         }
 
@@ -71,7 +74,7 @@ public class TransactionGatewayImpl implements TransactionGateway {
         dev.samuel.financesystem.infrastructure.persistence.Transaction saved =
                 transactionRepository.save(persistenceTransaction);
 
-        User destinationUser = userRepository.findById(destination.getUserId())
+        User destinationUser = userRepository.findById(destination.getUser().getId())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         userProducer.publishEvent(saved, destinationUser.getEmail());

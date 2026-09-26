@@ -1,4 +1,4 @@
-package dev.samuel.financesystem.core.usecases.user.findUser;
+package dev.samuel.financesystem.core.usecases.user.findUserByEmail;
 
 import dev.samuel.financesystem.core.entities.User;
 import dev.samuel.financesystem.core.gateway.UserGateway;

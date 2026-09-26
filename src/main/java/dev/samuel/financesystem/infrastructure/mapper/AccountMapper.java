@@ -19,11 +19,13 @@ public interface AccountMapper {
 
     // Request → Core
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userId", ignore = true) // virá do token JWT
+    @Mapping(target = "user", ignore = true) // virá do token JWT
     @Mapping(target = "createdAt", ignore = true)
     dev.samuel.financesystem.core.entities.Account toEntity(AccountRequest request);
 
     // Core → Response
+    @Mapping(target = "userName", source = "user.name")
+    @Mapping(target = "userCpf", source = "user.cpf")
     AccountResponse toAccountResponse(dev.samuel.financesystem.core.entities.Account account);
 
 }

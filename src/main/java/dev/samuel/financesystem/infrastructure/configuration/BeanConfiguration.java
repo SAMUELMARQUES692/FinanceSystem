@@ -17,8 +17,8 @@ import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseC
 import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.scope.findScope.FindScopeByNameUseCase;
 import dev.samuel.financesystem.core.usecases.scope.findScope.FindScopeByNameUseCaseImpl;
-import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCase;
-import dev.samuel.financesystem.core.usecases.user.findUser.FindByEmailUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.findUserByEmail.FindByEmailUseCase;
+import dev.samuel.financesystem.core.usecases.user.findUserByEmail.FindByEmailUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
@@ -27,6 +27,8 @@ import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.
 import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.TransferByPixUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCaseImpl;
+import dev.samuel.financesystem.core.usecases.user.findUserById.FindUserByIdUseCase;
+import dev.samuel.financesystem.core.usecases.user.findUserById.FindUserByIdUseCaseImpl;
 import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
 import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -64,6 +66,11 @@ public class BeanConfiguration {
     @Bean
     public FindAllUsersUseCase findAllUsersUseCase(UserGateway userGateway) {
         return new FindAllUsersUseCaseImpl(userGateway);
+    }
+
+    @Bean
+    public FindUserByIdUseCase findUserByIdUseCase(UserGateway userGateway) {
+        return new FindUserByIdUseCaseImpl(userGateway);
     }
 
     // Account

@@ -14,6 +14,9 @@ public record UserRequest(
      String name,
 
     @NotBlank
+    String cpf,
+
+    @NotBlank
     String email,
 
     @NotBlank

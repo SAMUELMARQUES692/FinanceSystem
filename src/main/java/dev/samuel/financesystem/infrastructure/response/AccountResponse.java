@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 public record AccountResponse(
         Long id,
-        Long userId,
+        String userName,
+        String userCpf,
         BigDecimal balance,
         String agency,
         String number,

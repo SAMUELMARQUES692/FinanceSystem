@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT t FROM Transaction t JOIN FETCH t.origin o JOIN FETCH t.destination d WHERE o.id = :originId OR d.id = :destinationId")
+    @Query("SELECT t FROM Transaction t " +
+            "JOIN FETCH t.origin o JOIN FETCH o.user " +
+            "JOIN FETCH t.destination d JOIN FETCH d.user " +
+            "WHERE o.id = :originId OR d.id = :destinationId")
     List<Transaction> findByOriginIdOrDestinationId(Long originId, Long destinationId);
 }

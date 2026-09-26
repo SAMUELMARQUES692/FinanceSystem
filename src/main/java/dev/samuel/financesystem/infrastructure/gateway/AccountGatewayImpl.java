@@ -30,7 +30,7 @@ public class AccountGatewayImpl implements AccountGateway {
 
     @Override
     public Account findByUserId(Long userId) {
-        return accountRepository.findByUserId(userId)
+        return accountRepository.findByUserIdWithUser(userId)
                 .map(accountMapper::toDomain)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
@@ -38,7 +38,7 @@ public class AccountGatewayImpl implements AccountGateway {
     @Cacheable(value = "balance", key = "#userId")
     @Override
     public Account getBalance(Long userId) {
-        return accountRepository.findByUserId(userId)
+        return accountRepository.findByUserIdWithUser(userId)
                 .map(accountMapper::toDomain)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
@@ -51,7 +51,7 @@ public class AccountGatewayImpl implements AccountGateway {
         dev.samuel.financesystem.infrastructure.persistence.Account persistenceAccount = accountMapper.toPersistenceEntity(account);
 
         persistenceAccount.setId(accountInfra.getId());
-        persistenceAccount.setUserId(accountInfra.getUserId());
+        persistenceAccount.setUser(accountInfra.getUser());
         persistenceAccount.setBalance(accountInfra.getBalance());
         persistenceAccount.setAgency(accountInfra.getAgency());
         persistenceAccount.setNumber(accountInfra.getNumber());

@@ -1,10 +1,7 @@
 package dev.samuel.financesystem.infrastructure.persistence;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -12,7 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "accounts")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"user"})
+@EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,8 +23,9 @@ public class Account {
     @SequenceGenerator(name = "accounts_seq", sequenceName = "accounts_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;

@@ -14,7 +14,7 @@ public class CreateAccountUseCaseImpl implements CreateAccountUseCase {
 
     @Override
     public Account execute(Account account) {
-        if (accountGateway.existsByUserId(account.userId())) {
+        if (accountGateway.existsByUserId(account.user().id())) {
             throw new AccountAlreadyExistsException("User already has an account");
         }
         return accountGateway.createAccount(account);

@@ -100,20 +100,28 @@ class AccountGatewayImplTest {
                 .createdAt(accountCore.createdAt())
                 .build();
 
-        Mockito.when(accountRepository.findByUserId(accountCore.userId())).thenReturn(Optional.of(accountInfra));
+        Mockito.when(accountRepository.findByUserIdWithUser(accountCore.user().id())).thenReturn(Optional.of(accountInfra));
         Mockito.when(accountMapper.toDomain(accountInfra)).thenReturn(accountCore);
 
-        accountGateway.findByUserId(accountCore.userId());
+        accountGateway.findByUserId(accountCore.user().id());
 
-        Mockito.verify(accountRepository).findByUserId(accountCore.userId());
+        Mockito.verify(accountRepository).findByUserIdWithUser(accountCore.user().id());
         Mockito.verify(accountMapper).toDomain(accountInfra);
     }
 
     @Test
     void getBalance() {
+        User user = User.builder()
+                .id(1L)
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .build();
+
         dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
                 .id(1L)
-                .userId(1L)
+                .user(user)
                 .balance(BigDecimal.TEN)
                 .agency("123123213")
                 .number("23")
@@ -122,19 +130,19 @@ class AccountGatewayImplTest {
 
         Account accountInfra = Account.builder()
                 .id(accountCore.id())
-                .userId(accountCore.userId())
+                .user(userInfra)
                 .balance(accountCore.balance())
                 .agency(accountCore.agency())
                 .number(accountCore.number())
                 .createdAt(accountCore.createdAt())
                 .build();
 
-        Mockito.when(accountRepository.findByUserId(accountCore.userId())).thenReturn(Optional.of(accountInfra));
+        Mockito.when(accountRepository.findByUserIdWithUser(accountCore.user().id())).thenReturn(Optional.of(accountInfra));
         Mockito.when(accountMapper.toDomain(accountInfra)).thenReturn(accountCore);
 
-        accountGateway.findByUserId(accountCore.userId());
+        accountGateway.findByUserId(accountCore.user().id());
 
-        Mockito.verify(accountRepository).findByUserId(accountCore.userId());
+        Mockito.verify(accountRepository).findByUserIdWithUser(accountCore.user().id());
         Mockito.verify(accountMapper).toDomain(accountInfra);
     }
 }
