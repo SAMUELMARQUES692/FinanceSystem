@@ -5,6 +5,7 @@ import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.infrastructure.exception.AccountNotFoundException;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.repository.AccountRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class AccountGatewayImpl implements AccountGateway {
     private final AccountMapper accountMapper;
 
     @Override
+    @Transactional
     public Account createAccount(Account account) {
        dev.samuel.financesystem.infrastructure.persistence.Account persistenceAccount = accountMapper.toPersistenceEntity(account);
        dev.samuel.financesystem.infrastructure.persistence.Account saved = accountRepository.save(persistenceAccount);
@@ -44,6 +46,7 @@ public class AccountGatewayImpl implements AccountGateway {
     }
 
     @Override
+    @Transactional
     public Account updateAccount(Long id, Account account) {
         dev.samuel.financesystem.infrastructure.persistence.Account accountInfra = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));

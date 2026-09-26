@@ -52,16 +52,6 @@ public class AccountController {
                 .createdAt(null)
                 .build();
 
-      /*  Account newAccount = new Account(
-                null,           // id
-                userId,         // userId
-                request.balance(),
-                request.agency(),
-                request.number(),
-                request.pix(),
-                null            // createdAt
-        );*/
-
         Account createdAccount = createAccountUseCase.execute(newAccount);
         AccountResponse response = accountMapper.toAccountResponse(createdAccount);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -88,22 +78,11 @@ public class AccountController {
             JwtAuthenticationToken token) {
 
         Long userId = Long.parseLong(token.getName());
-        User user = userGateway.findUserById(userId);
+        userGateway.findUserById(userId);
 
         Account updateAccount = Account.builder()
-                .user(user)
                 .pix(request.pix())
                 .build();
-
-       /* Account updateAccount = new Account(
-                null,           // id
-                userId,         // userId
-                null,           // balance
-                null,
-                null,
-                request.pix(),
-                null            // createdAt
-        );*/
 
         Account update = updateAccountUseCase.execute(id, updateAccount);
         AccountResponse response = accountMapper.toAccountResponse(update);
