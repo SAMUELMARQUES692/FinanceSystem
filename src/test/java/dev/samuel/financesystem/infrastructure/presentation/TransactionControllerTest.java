@@ -65,7 +65,7 @@ class TransactionControllerTest extends BaseIntegrationTest {
 
         Account origin = accountRepository.save(
                 Account.builder()
-                .userId(userOrigin.getId())
+                .user(userOrigin)
                 .balance(BigDecimal.TEN)
                 .agency("123123123")
                 .number("22")
@@ -75,16 +75,17 @@ class TransactionControllerTest extends BaseIntegrationTest {
 
         Account destination = accountRepository.save(
                 Account.builder()
-                .userId(userDestination.getId())
-                .balance(BigDecimal.TEN)
-                .agency("123123213")
-                .number("23")
-                .createdAt(LocalDateTime.now())
-                .build()
+                        .user(userDestination)
+                        .balance(BigDecimal.TEN)
+                        .agency("123123213")
+                        .pix("pix Teste")
+                        .number("23")
+                        .createdAt(LocalDateTime.now())
+                        .build()
         );
 
         TransactionRequest request = TransactionRequest.builder()
-                .destinationId(destination.getId())
+                .pix(destination.getPix())
                 .amount(BigDecimal.TEN)
                 .type(Type.TRANSFER)
                 .description("Description Test")
@@ -97,7 +98,7 @@ class TransactionControllerTest extends BaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.destinationId").value(request.destinationId()))
+                .andExpect(jsonPath("$.pix").value(request.pix()))
                 .andExpect(jsonPath("$.amount").value(request.amount()))
                 .andExpect(jsonPath("$.type").value(request.type().name()))
                 .andExpect(jsonPath("$.description").value(request.description()));
@@ -125,7 +126,7 @@ class TransactionControllerTest extends BaseIntegrationTest {
 
         Account origin = accountRepository.save(
                 Account.builder()
-                        .userId(userOrigin.getId())
+                        .user(userOrigin)
                         .balance(BigDecimal.TEN)
                         .agency("123123123")
                         .number("22")
@@ -135,7 +136,7 @@ class TransactionControllerTest extends BaseIntegrationTest {
 
         Account destination = accountRepository.save(
                 Account.builder()
-                        .userId(userDestination.getId())
+                        .user(userDestination)
                         .balance(BigDecimal.TEN)
                         .agency("123123213")
                         .number("23")
@@ -145,8 +146,8 @@ class TransactionControllerTest extends BaseIntegrationTest {
 
         Transaction transaction = transactionRepository.save(
                 Transaction.builder()
-                        .originId(origin.getId())
-                        .destinationId(destination.getId())
+                        .origin(origin)
+                        .destination(destination)
                         .amount(BigDecimal.TEN)
                         .type(Type.TRANSFER)
                         .status(Status.COMPLETED)
@@ -162,8 +163,8 @@ class TransactionControllerTest extends BaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(transaction)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].originId").value(transaction.getOriginId()))
-                .andExpect(jsonPath("$[0].destinationId").value(transaction.getDestinationId()))
+                .andExpect(jsonPath("$[0].origin").value(transaction.getOrigin()))
+                .andExpect(jsonPath("$[0].destination").value(transaction.getDestination()))
                 .andExpect(jsonPath("$[0].amount").value(transaction.getAmount()))
                 .andExpect(jsonPath("$[0].type").value(transaction.getType().name()))
                 .andExpect(jsonPath("$[0].status").value(transaction.getStatus().name()))

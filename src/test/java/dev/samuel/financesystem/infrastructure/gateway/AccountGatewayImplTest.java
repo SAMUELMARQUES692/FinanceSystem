@@ -32,9 +32,27 @@ class AccountGatewayImplTest {
 
     @Test
     void createAccount() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
         dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
                 .id(1L)
-                .userId(1L)
+                .user(userCore)
                 .balance(BigDecimal.TEN)
                 .agency("123123213")
                 .number("23")
@@ -43,7 +61,7 @@ class AccountGatewayImplTest {
 
         Account accountInfra = Account.builder()
                 .id(accountCore.id())
-                .userId(accountCore.userId())
+                .user(userInfra)
                 .balance(accountCore.balance())
                 .agency(accountCore.agency())
                 .number(accountCore.number())
@@ -64,27 +82,54 @@ class AccountGatewayImplTest {
 
     @Test
     void existsByUserId() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
         dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
                 .id(1L)
-                .userId(1L)
+                .user(userCore)
                 .balance(BigDecimal.TEN)
                 .agency("123123213")
                 .number("23")
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        Mockito.when(accountRepository.existsByUserId(accountCore.userId())).thenReturn(true);
+        Mockito.when(accountRepository.existsByUserId(accountCore.user().id())).thenReturn(true);
 
-        accountGateway.existsByUserId(accountCore.userId());
+        accountGateway.existsByUserId(accountCore.user().id());
 
-        Mockito.verify(accountRepository).existsByUserId(accountCore.userId());
+        Mockito.verify(accountRepository).existsByUserId(accountCore.user().id());
     }
 
     @Test
     void findByUserId() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
         dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
                 .id(1L)
-                .userId(1L)
+                .user(userCore)
                 .balance(BigDecimal.TEN)
                 .agency("123123213")
                 .number("23")
@@ -93,7 +138,7 @@ class AccountGatewayImplTest {
 
         Account accountInfra = Account.builder()
                 .id(accountCore.id())
-                .userId(accountCore.userId())
+                .user(userInfra)
                 .balance(accountCore.balance())
                 .agency(accountCore.agency())
                 .number(accountCore.number())

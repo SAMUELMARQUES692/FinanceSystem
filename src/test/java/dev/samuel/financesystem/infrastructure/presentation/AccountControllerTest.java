@@ -78,7 +78,7 @@ class AccountControllerTest extends BaseIntegrationTest {
 
         Account accountInfra = accountRepository.save(
                 Account.builder()
-                        .userId(userInfra.getId())
+                        .user(userInfra)
                         .balance(BigDecimal.TEN)
                         .agency("3123123213")
                         .number("12312")
@@ -93,7 +93,7 @@ class AccountControllerTest extends BaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(accountInfra)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(accountInfra.getUserId()))
+                .andExpect(jsonPath("$.user").value(accountInfra.getUser()))
                 .andExpect(jsonPath("$.balance").value(accountInfra.getBalance()))
                 .andExpect(jsonPath("$.agency").value(accountInfra.getAgency()))
                 .andExpect(jsonPath("$.number").value(accountInfra.getNumber()));
