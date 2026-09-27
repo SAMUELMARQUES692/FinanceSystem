@@ -190,4 +190,152 @@ class AccountGatewayImplTest {
         Mockito.verify(accountRepository).findByUserIdWithUser(accountCore.user().id());
         Mockito.verify(accountMapper).toDomain(accountInfra);
     }
+
+    @Test
+    void updateAccount() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
+                .id(1L)
+                .user(userCore)
+                .balance(BigDecimal.TEN)
+                .agency("123123213")
+                .number("23")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Account accountInfra = Account.builder()
+                .id(accountCore.id())
+                .user(userInfra)
+                .balance(accountCore.balance())
+                .agency(accountCore.agency())
+                .number(accountCore.number())
+                .createdAt(accountCore.createdAt())
+                .build();
+
+        Mockito.when(accountRepository.findById(accountCore.id())).thenReturn(Optional.of(accountInfra));
+        Mockito.when(accountMapper.toPersistenceEntity(accountCore)).thenReturn(accountInfra);
+        Mockito.when(accountRepository.save(accountInfra)).thenReturn(accountInfra);
+        Mockito.when(accountMapper.toDomain(accountInfra)).thenReturn(accountCore);
+
+        accountGateway.updateAccount(accountCore.id(), accountCore);
+
+        Mockito.verify(accountRepository).findById(accountCore.id());
+        Mockito.verify(accountMapper).toPersistenceEntity(accountCore);
+        Mockito.verify(accountRepository).save(accountInfra);
+        Mockito.verify(accountMapper).toDomain(accountInfra);
+    }
+
+    @Test
+    void findById() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
+                .id(1L)
+                .user(userCore)
+                .balance(BigDecimal.TEN)
+                .agency("123123213")
+                .number("23")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Account accountInfra = Account.builder()
+                .id(accountCore.id())
+                .user(userInfra)
+                .balance(accountCore.balance())
+                .agency(accountCore.agency())
+                .number(accountCore.number())
+                .createdAt(accountCore.createdAt())
+                .build();
+
+        Mockito.when(accountRepository.findById(accountCore.id())).thenReturn(Optional.of(accountInfra));
+        Mockito.when(accountMapper.toDomain(accountInfra)).thenReturn(accountCore);
+
+        accountGateway.findById(accountCore.id());
+
+        Mockito.verify(accountRepository).findById(accountCore.id());
+        Mockito.verify(accountMapper).toDomain(accountInfra);
+    }
+
+    @Test
+    void findByPix() {
+        User userCore = User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.infrastructure.persistence.User userInfra = dev.samuel.financesystem.infrastructure.persistence.User.builder()
+                .id(1L)
+                .email("Email Teste")
+                .name("Name Teste")
+                .cpf("CPF Teste")
+                .password("Password Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.Account accountCore = dev.samuel.financesystem.core.entities.Account.builder()
+                .id(1L)
+                .user(userCore)
+                .balance(BigDecimal.TEN)
+                .agency("123123213")
+                .pix("Pix Teste")
+                .number("23")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Account accountInfra = Account.builder()
+                .id(accountCore.id())
+                .user(userInfra)
+                .balance(accountCore.balance())
+                .agency(accountCore.agency())
+                .pix(accountCore.pix())
+                .number(accountCore.number())
+                .createdAt(accountCore.createdAt())
+                .build();
+
+        Mockito.when(accountRepository.findByPix(accountCore.pix())).thenReturn(Optional.of(accountInfra));
+        Mockito.when(accountMapper.toDomain(accountInfra)).thenReturn(accountCore);
+
+        accountGateway.findByPix(accountCore.pix());
+
+        Mockito.verify(accountRepository).findByPix(accountCore.pix());
+        Mockito.verify(accountMapper).toDomain(accountInfra);
+
+    }
 }
