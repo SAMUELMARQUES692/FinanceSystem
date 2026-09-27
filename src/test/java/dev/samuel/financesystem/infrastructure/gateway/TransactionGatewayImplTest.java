@@ -51,10 +51,10 @@ class TransactionGatewayImplTest {
     void transfer() {
         dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
                 .id(1L)
-                .email("Email Teste")
-                .name("Name Teste")
-                .cpf("CPF Teste")
-                .password("Password Teste")
+                .email("Email Teste Core")
+                .name("Name Teste Core")
+                .cpf("CPF Teste Core")
+                .password("Password Teste Core")
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -62,44 +62,57 @@ class TransactionGatewayImplTest {
                 .id(1L)
                 .user(userCore)
                 .balance(BigDecimal.TEN)
-                .agency("123123213")
-                .number("23")
+                .agency("Agency Test Origin")
+                .pix("Pix Test Origin")
+                .number("Number Test Origin")
                 .createdAt(LocalDateTime.now())
                 .build();
 
         dev.samuel.financesystem.core.entities.Account destinationCore = dev.samuel.financesystem.core.entities.Account.builder()
-                .id(1L)
+                .id(2L)
                 .user(userCore)
                 .balance(BigDecimal.TEN)
-                .agency("123123213")
-                .number("23")
+                .agency("Agency Test Destination")
+                .pix("Pix Test Destinarion")
+                .number("Number Test Destination")
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        User userInfra = User.builder()
+        User userInfraOrigin = User.builder()
                 .id(1L)
-                .email("Email Teste")
-                .name("Name Teste")
-                .cpf("CPF Teste")
-                .password("Password Teste")
+                .email("Email Teste Infra")
+                .name("Name Teste Infra")
+                .cpf("CPF Teste Infra")
+                .password("Password Teste Infra")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        User userInfraDestinatrion = User.builder()
+                .id(2L)
+                .email("Email Teste Infra")
+                .name("Name Teste Infra")
+                .cpf("CPF Teste Infra")
+                .password("Password Teste Infra")
                 .createdAt(LocalDateTime.now())
                 .build();
 
         Account originInfra = Account.builder()
                 .id(1L)
-                .user(userInfra)
-                .balance(BigDecimal.TEN)
-                .agency("123123213")
-                .number("23")
+                .user(userInfraOrigin)
+                .balance(originCore.balance())
+                .agency(originCore.agency())
+                .pix(originCore.pix())
+                .number(originCore.number())
                 .createdAt(LocalDateTime.now())
                 .build();
 
         Account destinationInfra = Account.builder()
-                .id(1L)
-                .user(userInfra)
-                .balance(BigDecimal.TEN)
-                .agency("123123213")
-                .number("23")
+                .id(2L)
+                .user(userInfraDestinatrion)
+                .balance(destinationCore.balance())
+                .agency(destinationCore.agency())
+                .pix(destinationCore.pix())
+                .number(destinationCore.number())
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -126,17 +139,17 @@ class TransactionGatewayImplTest {
                 .build();
 
         Mockito.when(accountRepository.findById(originInfra.getId())).thenReturn(Optional.of(originInfra));
-        Mockito.when(accountRepository.findById(destinationInfra.getId())).thenReturn(Optional.of(destinationInfra));
+        Mockito.when(accountRepository.findByPix(destinationInfra.getPix())).thenReturn(Optional.of(destinationInfra));
         Mockito.when(accountRepository.save(originInfra)).thenReturn(originInfra);
         Mockito.when(accountRepository.save(destinationInfra)).thenReturn(destinationInfra);
         Mockito.when(transactionMapper.toPersistenceEntity(transactionCore)).thenReturn(transactionInfra);
         Mockito.when(transactionRepository.save(transactionInfra)).thenReturn(transactionInfra);
-        Mockito.when(userRepository.findById(destinationInfra.getUser().getId())).thenReturn(Optional.of(userInfra));
+        Mockito.when(userRepository.findById(destinationInfra.getUser().getId())).thenReturn(Optional.of(userInfraDestinatrion));
 
         transactionGateway.transfer(transactionCore);
 
         Mockito.verify(accountRepository).findById(originInfra.getId());
-        Mockito.verify(accountRepository).findById(destinationInfra.getId());
+        Mockito.verify(accountRepository).findByPix(destinationInfra.getPix());
         Mockito.verify(accountRepository).save(originInfra);
         Mockito.verify(accountRepository).save(destinationInfra);
         Mockito.verify(transactionMapper).toPersistenceEntity(transactionCore);
@@ -224,11 +237,13 @@ class TransactionGatewayImplTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
+        Mockito.when(accountRepository.findById(transactionInfra.getOrigin().getId())).thenReturn(Optional.of(originInfra));
         Mockito.when(transactionRepository.findByOriginIdOrDestinationId(transactionInfra.getOrigin().getId(), transactionInfra.getDestination().getId())).thenReturn(List.of(transactionInfra));
         Mockito.when(transactionMapper.toDomain(transactionInfra)).thenReturn(transactionCore);
 
         transactionGateway.findByAccountId(transactionInfra.getOrigin().getId());
 
+        Mockito.verify(accountRepository).findById(transactionInfra.getOrigin().getId());
         Mockito.verify(transactionRepository).findByOriginIdOrDestinationId(transactionInfra.getOrigin().getId(), transactionInfra.getDestination().getId());
         Mockito.verify(transactionMapper).toDomain(transactionInfra);
     }
