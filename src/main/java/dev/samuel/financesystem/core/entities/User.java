@@ -1,5 +1,6 @@
 package dev.samuel.financesystem.core.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public record User(
         String password,
         LocalDateTime createdAt,
         List<Scope> scopes
-) {
+) implements Serializable {
 
     public static Builder builder() {
         return new Builder();

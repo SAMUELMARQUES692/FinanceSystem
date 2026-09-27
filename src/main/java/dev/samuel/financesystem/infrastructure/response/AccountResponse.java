@@ -1,10 +1,12 @@
 package dev.samuel.financesystem.infrastructure.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Builder
 public record AccountResponse(
         Long id,
         String userName,
