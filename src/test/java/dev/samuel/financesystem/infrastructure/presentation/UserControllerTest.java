@@ -9,6 +9,7 @@ import dev.samuel.financesystem.infrastructure.persistence.User;
 import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import dev.samuel.financesystem.infrastructure.request.UserRequest;
+import dev.samuel.financesystem.infrastructure.response.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -116,7 +117,33 @@ class UserControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void findAllUsers() {
+    void findAllUsers() throws Exception{
+        User userInfra = userRepository.save(
+                User.builder()
+                        .name("Name Test")
+                        .cpf("CPF Test")
+                        .email("Email Test")
+                        .password("Password Test")
+                        .createdAt(LocalDateTime.now())
+                        .build()
+        );
 
+        UserResponse response = UserResponse.builder()
+                .id(userInfra.getId())
+                .name(userInfra.getName())
+                .cpf(userInfra.getCpf())
+                .email(userInfra.getEmail())
+                .createdAt(userInfra.getCreatedAt())
+                .build();
+
+        mockMvc.perform(get("/users")
+                        .with(jwt().authorities(new SimpleGrantedAuthority("SCOPE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(response)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(response.id()))
+                .andExpect(jsonPath("$[0].name").value(response.name()))
+                .andExpect(jsonPath("$[0].cpf").value(response.cpf()))
+                .andExpect(jsonPath("$[0].email").value(response.email()));
     }
 }
