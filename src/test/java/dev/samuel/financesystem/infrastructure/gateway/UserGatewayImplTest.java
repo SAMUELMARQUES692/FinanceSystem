@@ -4,7 +4,6 @@ import dev.samuel.financesystem.core.entities.Scope;
 import dev.samuel.financesystem.infrastructure.mapper.ScopeMapper;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.persistence.User;
-import dev.samuel.financesystem.infrastructure.repository.ScopeRepository;
 import dev.samuel.financesystem.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserGatewayImplTest {
@@ -161,5 +163,87 @@ class UserGatewayImplTest {
 
         Mockito.verify(userRepository).findByEmail(userInfra.getEmail());
         Mockito.verify(userMapper).toDomain(userInfra);
+    }
+
+    @Test
+    void findAllUsers() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findAll()).thenReturn(List.of(userInfra));
+        Mockito.when(userMapper.toDomain(userInfra)).thenReturn(userCore);
+
+        userGateway.findAllUsers();
+
+        Mockito.verify(userRepository).findAll();
+        Mockito.verify(userMapper).toDomain(userInfra);
+    }
+
+    @Test
+    void findUserById() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findById(userCore.id())).thenReturn(Optional.of(userInfra));
+        Mockito.when(userMapper.toDomain(userInfra)).thenReturn(userCore);
+
+        userGateway.findUserById(userCore.id());
+
+        Mockito.verify(userRepository).findById(userCore.id());
+        Mockito.verify(userMapper).toDomain(userInfra);
+    }
+
+    @Test
+    void ShouldReturnExceptionWhenUserNotFound() {
+        User userInfra = User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        dev.samuel.financesystem.core.entities.User userCore = dev.samuel.financesystem.core.entities.User.builder()
+                .id(1L)
+                .name("Name Test")
+                .email("emailtest@gmail.com")
+                .password("Senha Teste")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Mockito.when(userRepository.findById(userInfra.getId())).thenReturn(Optional.empty());
+
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class,
+                () -> {
+            userGateway.findUserById(userCore.id());
+        });
+
+        assertEquals("User not found with id: " + userCore.id(), exception.getMessage());
     }
 }
