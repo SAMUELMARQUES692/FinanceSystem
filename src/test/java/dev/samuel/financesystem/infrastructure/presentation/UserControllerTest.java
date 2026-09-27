@@ -114,4 +114,9 @@ class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$.email").value(userInfra.getEmail()));
 
     }
+
+    @Test
+    void findAllUsers() {
+
+    }
 }

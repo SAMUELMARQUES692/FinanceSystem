@@ -98,4 +98,24 @@ class AccountControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$.agency").value(accountInfra.getAgency()))
                 .andExpect(jsonPath("$.number").value(accountInfra.getNumber()));
     }
+
+    @Test
+    void findByuserId() {
+
+    }
+
+    @Test
+    void updateAccount() {
+
+    }
+
+    @Test
+    void findById() {
+
+    }
+
+    @Test
+    void findByPix() {
+
+    }
 }
