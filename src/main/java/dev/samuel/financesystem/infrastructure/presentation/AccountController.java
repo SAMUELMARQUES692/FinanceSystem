@@ -9,6 +9,7 @@ import dev.samuel.financesystem.core.usecases.account.findAccount.FindAccountByU
 import dev.samuel.financesystem.core.usecases.account.findAccountById.FindByIdUseCase;
 import dev.samuel.financesystem.core.usecases.account.findAccountByPix.FindAccountByPixUseCase;
 import dev.samuel.financesystem.core.usecases.account.updateAccount.UpdateAccountUseCase;
+import dev.samuel.financesystem.infrastructure.documentation.AccountControllerDoc;
 import dev.samuel.financesystem.infrastructure.mapper.AccountMapper;
 import dev.samuel.financesystem.infrastructure.request.AccountRequest;
 import dev.samuel.financesystem.infrastructure.request.UpdateAccountRequest;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/accounts")
-public class AccountController {
+public class AccountController implements AccountControllerDoc {
 
     private final CreateAccountUseCase createAccountUseCase;
     private final FindAccountByUserIdUseCase findAccountByUserIdUseCase;
