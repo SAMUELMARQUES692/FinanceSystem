@@ -7,6 +7,7 @@ import dev.samuel.financesystem.core.enums.Type;
 import dev.samuel.financesystem.core.gateway.AccountGateway;
 import dev.samuel.financesystem.core.usecases.transactions.reportUse.ReportUseCase;
 import dev.samuel.financesystem.core.usecases.transactions.transferByPixUseCase.TransferByPixUseCase;
+import dev.samuel.financesystem.infrastructure.documentation.TransactionControllerDoc;
 import dev.samuel.financesystem.infrastructure.mapper.TransactionMapper;
 import dev.samuel.financesystem.infrastructure.request.TransactionRequest;
 import dev.samuel.financesystem.infrastructure.response.TransactionResponse;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/transactions")
-public class TransactionController {
+public class TransactionController implements TransactionControllerDoc {
 
     private final TransferByPixUseCase transferUseCase;
     private final TransactionMapper transactionMapper;
