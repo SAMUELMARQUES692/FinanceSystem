@@ -6,6 +6,7 @@ import dev.samuel.financesystem.core.usecases.user.deleteUser.DeleteUserUseCase;
 import dev.samuel.financesystem.core.usecases.user.findAllUsers.FindAllUsersUseCase;
 import dev.samuel.financesystem.core.usecases.user.findUserByEmail.FindByEmailUseCase;
 import dev.samuel.financesystem.core.usecases.user.updateUser.UpdateUseCase;
+import dev.samuel.financesystem.infrastructure.documentation.UserControllerDoc;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.request.UserRequest;
 import dev.samuel.financesystem.infrastructure.response.UserResponse;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserControllerDoc {
 
     private final CreateUserUseCase createUserUseCase;
     private final UpdateUseCase updateUseCase;
