@@ -3,6 +3,7 @@ package dev.samuel.financesystem.infrastructure.presentation;
 import dev.samuel.financesystem.core.usecases.login.LoginInput;
 import dev.samuel.financesystem.core.usecases.login.LoginOutput;
 import dev.samuel.financesystem.core.usecases.login.LoginUseCase;
+import dev.samuel.financesystem.infrastructure.documentation.LoginControllerDoc;
 import dev.samuel.financesystem.infrastructure.mapper.UserMapper;
 import dev.samuel.financesystem.infrastructure.request.LoginRequest;
 import dev.samuel.financesystem.infrastructure.response.LoginResponse;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/login")
-public class LoginController {
+public class LoginController implements LoginControllerDoc {
 
     private final LoginUseCase loginUseCase;
 
